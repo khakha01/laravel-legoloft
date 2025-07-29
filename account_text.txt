@@ -1,0 +1,30 @@
+test momo:
+NGUYEN VAN A
+9704 0000 0000 0018
+03/07
+OTP
+
+test vnpay:
+(vnp_TmnCode): CGXZLS0Z
+(vnp_HashSecret): XNBCJFAKAZQSGTARRLGCHVZWCIOIGSHN
+Ngân hàng: NCB
+9704198526191432198
+NGUYEN VAN A
+07/15
+123456
+
+
+===============
+
+composer require unisharp/laravel-filemanager
+php artisan vendor:publish --tag=lfm_config
+php artisan vendor:publish --tag=lfm_public
+
+mkdir storage\app\public
+php artisan storage:link
+
+composer require intervention/image
+composer require intervention/image-laravel
+
+
+

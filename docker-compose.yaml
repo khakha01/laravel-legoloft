@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: legoloft-app
+    ports:
+      - "9000:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=legoloft
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+    networks:
+      - legoloft-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: legoloft-mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: legoloft
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - legoloft-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: legoloft-phpmyadmin
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: secret
+    networks:
+      - legoloft-network
+
+volumes:
+  mysql_data:
+
+networks:
+  legoloft-network:
+    driver: bridge
